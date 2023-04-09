@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <style>
+      .content {
+        width: 1024px;
+      }
+
+      .disp {
+        height: 200px;
+        border: 1px solid black;
+      }
+
+      .tab_host {
+        display: flex;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .tab:hover {
+        cursor: pointer;
+      }
+
+      .tab {
+        width: 200px;
+        border: 1px solid #ededed;
+      }
+
+      #list {
+        border: 1px solid #ededed;
+      }
+      /* addEventListener 스타일 정의 */
+      .click-tab {
+        color: #fff;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="disp" id="display">
+        <form>
+          <p>1.페이지가 로딩 될 때 이곳의 글씨를 변경하시오.</p>
+        </form>
+      </div>
+      <!-- 문제1번 풀이 -->
+      <script>
+        // window.onload - 웹브라우저가 로드된 이후에 실행
+        window.onload = function () {
+          // document.querySelector를 사용해 아이디가 display인 것을 선택
+          const $display = document.querySelector("#display");
+          // $display.innerText 로 찍어주면 끝
+          // 자바스크립트 day08 수업시간에 나온 문제
+          console.log($display);
+          $display.innerText = "변경";
+        };
+      </script>
+
+      <p>2.탭을 선택하면 선택한 탭의 배경과 글자의색이 바뀌도록 하시오</p>
+      <div class="tab_host">
+        <div class="tab">탭1</div>
+        <div class="tab">탭2</div>
+        <div class="tab">탭3</div>
+        <div class="tab">탭4</div>
+        <div class="tab">탭5</div>
+      </div>
+      <p>
+        3. 위의 탭 클릭시 아래의 컨텐츠중 탭과 숫자가 같은 것만 보이게 하시오.
+      </p>
+      <div class="tab_body">
+        <div class="block">탭1 컨텐츠</div>
+        <div class="block">탭3 컨텐츠</div>
+        <div class="block">탭2 컨텐츠</div>
+        <div class="block">탭5 컨텐츠</div>
+        <div class="block">탭4 컨텐츠</div>
+      </div>
+      <script>
+        // querySelectorAll를 사용해 class가 tab 인 것을 모두 선택
+        const $tabs = document.querySelectorAll(".tab");
+        // querySelectorAll를 사용해 class가 block 인 것을 모두 선택
+        const $blocks = document.querySelectorAll(".block");
+        // forEach를 사용해 배열들은 반복시킨다
+        $tabs.forEach((tab, index) => {
+          // addEventListener로 클릭 이벤트를 만들어주고
+          tab.addEventListener("click", () => {
+            // 모든 tab에서 style로 만들어준 click-tab 제거
+            $tabs.forEach((tab) => tab.classList.remove("click-tab"));
+            // 클릭한 탭에 click-tab 추가
+            tab.classList.add("click-tab");
+            // 숫자와 같은 블록만 보이도록 처리
+            $blocks.forEach((block) => {
+              if (block.textContent.includes(`탭${index + 1}`)) {
+                block.style.display = "block";
+              } else {
+                block.style.display = "none";
+              }
+            });
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>
