@@ -22,6 +22,10 @@ for (let i = 0; i < 6; i++) {
       i--;
     }
   }
+  // 배열 오름차순 정렬
+  lotto.sort((a, b) => {
+    return a - b;
+  });
 }
 
 console.log(lotto);
