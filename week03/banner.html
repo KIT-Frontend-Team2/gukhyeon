@@ -179,6 +179,44 @@
         $slideBannerWidth * slideBannerIndex
       }px)`;
       */
+
+      const $slideBanner = document.querySelectorAll("#slide-banner > ul > li");
+      const $slideNextBtn = document.querySelector(".slide-next-btn");
+      const $slidePrevBtn = document.querySelector(".slide-prev-btn");
+
+      const $slideWidth = $slideBanner[0].clientWidth;
+      let slideBannerIndex = 0;
+
+      function slidePaint() {
+        $slideBanner.forEach((banner, index) => {
+          if (index === slideBannerIndex) {
+            $slideBanner[index].style.transform = `translateX(-${
+              $slideWidth * slideBannerIndex
+            }px)`;
+          }
+        });
+      }
+
+      function nextSlideBanner() {
+        if (slideBannerIndex >= $slideBanner.length - 1) {
+          slideBannerIndex = 0;
+        } else {
+          slideBannerIndex++;
+        }
+        slidePaint();
+      }
+
+      function prevSlideBanner() {
+        if (slideBannerIndex <= 0) {
+          slideBannerIndex = $slideBanner.length - 1;
+        } else {
+          slideBannerIndex--;
+        }
+        slidePaint();
+      }
+
+      $slideNextBtn.addEventListener("click", nextSlideBanner);
+      $slidePrevBtn.addEventListener("click", prevSlideBanner);
     </script>
   </body>
 </html>
