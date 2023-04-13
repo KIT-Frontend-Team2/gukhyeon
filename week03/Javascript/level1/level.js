@@ -44,17 +44,18 @@ $button.addEventListener("click", () => {
   let parsedAccountNum = ACCOUNT_FORM[$bankValue].slice(2, -2);
   let firstTwoDigits = $accountNum.slice(0, 2);
   let lastTwoDigits = $accountNum.slice(-2);
+  let maskedAccountNum = "";
 
   for (let i = 0; i < parsedAccountNum.length; i++) {
     if (parsedAccountNum[i] === "-") {
-      parsedAccountNum += "-";
+      maskedAccountNum += "-";
     } else {
-      parsedAccountNum += "*";
+      maskedAccountNum += "*";
     }
   }
 
   const $li = document.createElement("li");
-  $li.innerHTML = `${BANK_LIST[$bankValue]} : \n${firstTwoDigits} ${parsedAccountNum} ${lastTwoDigits}`;
+  $li.innerHTML = `${BANK_LIST[$bankValue]} : \n${firstTwoDigits} ${maskedAccountNum} ${lastTwoDigits}`;
   $accountList.appendChild($li);
 });
 
