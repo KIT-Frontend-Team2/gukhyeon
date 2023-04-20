@@ -20,3 +20,34 @@
     기초. promise를 사용하여 구현할 것
     심화. pomise의 then catch가 아닌 async await을 사용할 것
 */
+
+const slidePanel = new Promise((resolve) => {
+  console.log("min size");
+  setTimeout(() => {
+    resolve(console.log("max size"));
+  }, 700);
+});
+
+// slidePanel
+//   .then(() => {
+//     // console.log(`이번 주 목표까지 ${num}% 남았습니다.`);
+//     console.log("이번 주 목표까지 15% 남았습니다");
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// ==================================================================
+
+function progress() {
+  console.log("이번 주 목표까지 15% 남았습니다.");
+}
+
+const asyncSlide = async () => {
+  try {
+    await slidePanel;
+    progress();
+  } catch (err) {
+    console.log(err);
+  }
+};
