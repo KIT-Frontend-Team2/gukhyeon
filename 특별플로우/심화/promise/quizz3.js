@@ -14,29 +14,43 @@ async await을 통해 구현하고자 합니다.
 */
 
 const promise1 = () =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     setTimeout(() => {
-      console.log('비동기1');
+      console.log("비동기1");
       resolve(1);
+      reject("error");
     }, 3000);
   });
 
 const promise2 = () =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     setTimeout(() => {
-      console.log('비동기2');
+      console.log("비동기2");
       resolve(2);
+      reject("error");
     }, 3000);
   });
 
 const promise3 = () =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     setTimeout(() => {
-      console.log('비동기3');
+      console.log("비동기3");
       resolve(3);
+      reject("error");
     }, 3000);
   });
 
-promise1().then((res) => {
-  promise2().then(() => promise3());
-});
+// promise1().then((res) => {
+//   promise2().then(() => promise3());
+// });
+const fetchData = async () => {
+  try {
+    const res1 = await promise1();
+    await promise2();
+    await promise3();
+  } catch (error) {
+    console.log("정보를 불러오는데 실패하였습니다.");
+  }
+};
+
+fetchData();
