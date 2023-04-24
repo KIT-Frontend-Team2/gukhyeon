@@ -14,5 +14,52 @@
 안전 위험으로 시동을 종료했다는 메시지가 콘솔과 로그됨과 동시에 시동이 꺼집니다. 6. 시동이 걸리지 않으면 주행을 할 수 없습니다.
 7. 시동이 걸려있는 상태에서 시동을 다시 걸 수 없습니다.
 8. 시동이 꺼져있는 상태에서 시동을 다시 끌 수 없습니다.
-
 */
+
+function car(distance) {
+  let ignition = false; // 시동이 걸려 있는지 여부를 저장하는 변수
+
+  return {
+    start: function () {
+      if (ignition) {
+        console.log("시동이 이미 걸려있습니다.");
+      } else {
+        ignition = true;
+        console.log("시동이 걸렸습니다.");
+      }
+    },
+    stop: function () {
+      if (!ignition) {
+        console.log("시동이 이미 꺼져있습니다.");
+      } else {
+        ignition = false;
+        console.log("시동이 꺼졌습니다.");
+      }
+    },
+    drive: function () {
+      if (!ignition) {
+        console.log("시동이 꺼져있습니다. 주행할 수 없습니다.");
+      } else {
+        for (let i = 1; i <= distance; i++) {
+          if (i > 40) {
+            console.log("안전 위험으로 시동을 종료합니다.");
+            this.stop();
+            break;
+          } else {
+            console.log(i + "km 주행했습니다.");
+          }
+        }
+        console.log("주행이 완료되었습니다.");
+      }
+    },
+  };
+}
+
+const myCar = car(50); // 50km를 주행해야 함
+
+myCar.start(); // 시동이 걸림
+myCar.drive(); // 1km ~ 40km 까지 주행 후, 안전 위험으로 시동이 종료됨
+myCar.start(); // 시동이 꺼져있으므로 시동이 걸리지 않음
+myCar.drive(); // 시동이 꺼져있으므로 주행할 수 없음
+myCar.start(); // 시동이 꺼져있으므로 시동이 걸리지 않음
+myCar.stop(); // 시동이 꺼져있으므로 시동을 끌 수 없음
