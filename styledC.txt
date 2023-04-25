@@ -1,0 +1,131 @@
+
+개발자 도구로 들어가서 elements를 찍어보면 그냥 button 태그가 나온다(이미지 참조)
+button 태그의 특징은 class를 지정하지 않아도 class명이 있다
+class 이름은 sc로 시작하는데 styled-components의 약자이다.
+
+
+styledButton ` 이 부분에 css 문법을 작성 `
+style 이 head에 스타일로 적용이 되고 그 내용은 components의 class가 자동으로 추가된다.
+styled-components가 겹치지 않게 class를 넣어주고 style도 만들어주고 관리해준다.
+
+`이 부분은 문자열이기 때문에 오타가 나더라도 쉽게 판별하기 어려움이 있을 수 있다.`
+
+
+스타일 추가 
+border-radius: 3px;
+border: 2px solid palevioletred;
+color: palevioletred
+margin: 0 1em;
+padding: 0.25em 1em;
+font-size: 20px
+
+
+================================================================
+
+App.js 에 styledButton 추가 
+props로 primary 추가 
+
+styled.jsx로 와서 
+표현식 작성 
+${props => props.primary && 
+  css`
+background: palevioletred;
+color: white;
+`}
+`` 부분은 css 구간이기 때문에 
+import styled, {css} from "styled-components";에서 css를 가져와서
+`` 앞에 붙여준다. 
+
+
+App.js로 와서
+primary를 Props로 주지 말고
+<PrimaryStyledButton>을 만들어준다. 
+
+상단에 변수로 PrimaryStyledButton를 만들어주고 
+styled를 가져오는데 이미 있는 항목이 아니기 때문에 
+styled() 안에 styledButton을 인자로 넣어준다. 
+뒤에 `` 안에 css 옵션을 넣어준다.
+
+
+
+
+style을 만들어 놓고 다른 엘리먼트에 적용을 하고 싶은 경우 
+새로 만들게 아니라 만들어 놓은 styledButton 다른 태그로 바꿀 수 있다.
+as라는 props에 원하는 태그를 넣어준다 
+ex) <StyledButton as="a" href="/">버튼</StyledButton>
+
+특정한 style을 만들어 놓고 다른 태그로 사용하고 싶다면 as를 사용하면 된다.
+as는 특정 엘리먼트를 지칭할 수 있을 뿐만 아니라 특정 컴포넌트도 지칭해서 컴포넌트에 style을 적용할 수 있다.
+
+
+(컴포넌트 생성)
+const UpperCaseButton = props => <button {...props} children={props.children.toUpperCase()}/>;
+UpperCaseButton는 props를 받아서 button을 리턴한다.
+
+<StyledButton as={UpperCaseButton}>
+(as는 표현식으로도 가능)
+
+
+다른 방식
+
+// props를 받아오는 위 방식들과 달리 class의 이름을 받아오기 때문에 className={props.className} 사용한다.
+const MyButton = props => <button className={props.className} children={`MyButton ${props.children}`}/>;
+
+const StyledMyButton = styled(MyButton)`
+  css 옵션
+`;
+
+<StyledMyButton>
+
+
+<StyledMyButton> 안에서 style을 적용하는 법
+
+const StyledMyButton = styled(Mybutton)`
+  background: transparent;
+  border-radius: 3px;
+  border: 2px solid ${(props) => props.color || "palevioletred"};
+  color: palevioletred;
+  margin: 0 1em;
+  padding: 0.25em 1em;
+  font-size: 20px;
+`;
+
+미리 만들어놓은 style에서 표현식을 통해 props를 받아주는데 위와 같은 코드는 props.color 가 없을 경우를 대비해 default 값으로 "palevioletred"를 넣어주었다.
+
+사용법 <StyledMyButton color="green">
+
+
+:hover, ::before 같은 css 선택자도 사용 가능 
+
+
+
+global 사용법 
+컴포넌트 생성
+const GlobalStyle = createGlobalStyle`
+button {
+  color: yellow
+}
+`;
+
+createGlobalStyle은 styled에서 import 받아와야 한다.
+
+위 컴포넌트는 렌더를 해야한다.
+적용하고자 하는 위치에 <GlobalStyle /> 추가 
+(이름에 맞게 제일 상단에 추가함)
+
+앞선 코드에서는 컴포넌트에서 적용한 속성이 global 속성보다 우선 순위이기 떼문에 적용이 되진 않는다.
+
+
+어트리뷰트 세팅
+
+링크 컴포넌트 생성
+
+const StyledA = styled.a.attrs((props) => ({
+  target: _BLANK,
+}))`
+  color: ${(props) => props.color};
+  `;
+
+    객체로 만들어 적용하고자 하는 어트리뷰트를 적용시킬 수 있다
+    <StyledA href="https://google.com">
+ 

@@ -52,16 +52,27 @@ CRUD 구현하기
   내가 추가하고자 하는 유저를 추가해야합니다
   단 id는 고유 번호로 반드시 순서대로일 필요는 없지만, 어떠한 경우에도 겹쳐서 안됩니다
 */
-const nweUser = {
-  id: 5,
-  name: "윤국현",
-  age: 25,
-  height: 177,
-};
+// const newUser = {
+//   id: 5,
+//   name: "윤국현",
+//   age: 25,
+//   height: 177,
+// };
 
-users.push(nweUser);
-console.log("문제 1번: ", users);
+// users.push(newUser);
+// console.log("문제 1번: ", users);
 
+// 스프레드를 사용한 얕은 복사 - 원본 배열을 건들지 않는다.
+const newUser = [
+  ...users,
+  {
+    id: 5,
+    name: "윤국현",
+    age: 25,
+    height: 177,
+  },
+];
+console.log("문제 1번: ", newUser);
 /*
 문제2. 유저 삭제하기
   내가 원하는 유저를 삭제할 수 있어야합니다.
@@ -79,6 +90,11 @@ function deleteUser(id) {
 }
 
 deleteUser(2);
+
+// function deleteUser(list, deleteName) {
+//   const newList = list.filter((user) => user.name !== deleteName);
+//   return newList;
+// }
 
 /*
 문제3. 유저 수정하기
