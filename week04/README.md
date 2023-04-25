@@ -277,10 +277,226 @@ css 문법 안에는 미리 만들어놓은 style에서 표현식을 통해 prop
 
 이제 버튼 옆에 porps로 color를 주면 적용이된다.
 
+:hover, ::before와 같은 css 선택자도 사용이 가능하다.
+
 ## 예시 이미지
 
 <img src="./img/capture10.png">
-- hooks 함수의 종류와 사용 이유
+
+## global로 적용할 때
+
+```jsx
+import styled, { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+button {
+  color: yellow
+}
+`;
+
+<GlobalStyle />;
+```
+
+컴포넌트를 생성하고 import 한 createGlobalStyle를 받아와준다
+css 속성을 적용하고
+적용하고자 하는 위치에 <GlobalStyle />;를 렌더한다.
+이름에 맞게 코드 상단에 렌더했지만 위 코드에선 적용이 되지 않는다.
+이유는 컴포넌트에서 적용한 속싱이 global 속성보다 우선 순위이 때문
+
+## 이미지
+
+<img src="./img/capture11.png">
+
+## 어트리뷰트 셋팅
+
+예시로 링크 컴포넌트를 하나 생성한다.
+
+```jsx
+const StyledA = styled.a.attrs((props) => ({
+  target: "_blank",
+}))`
+  color: black;
+  background-color: white;
+`;
+<StyledA href="https://www.naver.com">링크</StyledA>;
+```
+
+styled를 가져와 점 뒤에 만들고자 하는 태그 입력하고 attrs함수로 props를 받아온 다음 객체로 적용하고자 하는 어트리뷰트를 넣는다.
+
+## 실행 예시
+
+<img src="./img/capture12.png">
+
+---
+
+# hooks 함수의 종류와 사용 이유
+
+<a href="https://velog.io/@sunhwa508/%EC%9A%B0%EB%A6%AC%EA%B0%80-%EB%A6%AC%EC%95%A1%ED%8A%B8%EC%97%90%EC%84%9C-Hooks-%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0" target="_blank"> 출처 (우리가 리액트에서 Hooks를 사용하는 이유)</a>
+
+## Hooks의 종류
+
+1. **State Hook**
+
+```jsx
+import React, { useState } from "react";
+
+function Example() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+```
+
+- 위 코드에서 보이는 useState가 바로 Hook이다.
+- useState는 현재의 state 값과 이 값을 업데이트하는 함수를 쌍으로 제공한다.
+- useState() 안에 들어가는 초기값은 첫 번재 렌더링에만 딱 한번 사용된다.
+
+2. **Effect Hook**
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function FriendStatus(props) {
+  const [isOnline, setIsOnline] = useState(null);
+
+  function handleStatusChange(status) {
+    setIsOnline(status.isOnline);
+  }
+
+  useEffect(() => {
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+
+  if (isOnline === null) {
+    return "Loading...";
+  }
+  return isOnline ? "Online" : "Offline";
+}
+```
+
+- useEffect는 함수 컴포넌트 내에서 이런 side effects를 수행할 수 있게 해준다.
+- useEffect를 사용하면, React는 DOM을 바꾼 뒤에 "effect" 함수를 실행할 것이다.
+- Effect를 "해제"할 필요가 있다면, 해제하는 함수를 반환해주면 된다.
+- class 컴포넌트에서는 생명주기 메서드를 사용해 각각 쪼개서 넣어야만 했다면 Hook을 사용하면 코드를 한 군데에 모아서 작성할 수 있게 된다.
+
+3.  **다른 내장 Hook인 useContext, useReducer**
+
+useContext는 컴포넌트를 중첩하지 않고도 React context를 구독할 수 있게 해준다.
+
+4. **이외 기타 hooks**
+
+   1. useCallback
+
+   ```jsx
+   const memoizedCallback = useCallback(() => {
+     doSomething(a, b);
+   }, [a, b]);
+
+   // 1. 매모이제이션된 콜백을 반환한다.
+   // 2. 불필요한 렌더링을 방지하기 위해 참조의 동일성에 의존적인 최적화된 자식 컴포넌트에 콜백을 전달할 때 유용하다.
+   ```
+
+   2. useMemo
+
+   ```jsx
+   const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+
+   // 1. 메모이제이션된 값을 반환
+   // 2. useMemo는 의존성이 변경되었을 때만 메모제이션된 값만 다시 계산하여 모든 렌더링 시 고비용 계산을 방지해 최적화 해준다.
+   // 3. useMemo로 전달된 함수는 렌더링 중에 실행된다는 것을 기억하자. 통상적으로 렌더링 중에는 하지 않는 것을 이 함수 내에서 적용하면 안된다.
+   ```
+
+   3. useRef
+
+   ```jsx
+   function TextInputWithFocusButton() {
+     const inputEl = useRef(null);
+     const onButtonClick = () => {
+       // `current` points to the mounted text input element
+       inputEl.current.focus();
+     };
+     return (
+       <>
+         <input ref={inputEl} type="text" />
+         <button onClick={onButtonClick}>Focus the input</button>
+       </>
+     );
+   }
+
+   // 1. DOM에 접근하는 방법으로 사용된다.
+   // 2. useRef()는 순수 자바스크립트 객체를 생성하기 때문에 ref 속성보다 유용하다.
+   // 3. 본질적으로 useRef는 .current 프로퍼티에 변경이 가능한 값을 담고 있는 '상자'라고 표현한다.
+   ```
+
+   4. uselmperativeHandle
+
+   ```jsx
+   function FancyInput(props, ref) {
+   const inputRef = useRef();
+   useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current.focus();
+    }
+   }));
+   return <input ref={inputRef} ... />;
+   }
+   FancyInput = forwardRef(FancyInput);
+
+   /*
+   1. useImperativeHandle은 ref를 사용할 때 부모 컴포넌트에 노출되는 인스턴스 값을 사용자화(customizes)합니다
+
+   2. 예시에서 <FancyInput ref={inputRef} />를 렌더링한 부모 컴포넌트는 inputRef.current.focus()를 호출할 수 있습니다.
+    */
+   ```
+
+   5. useLayoutEffect
+
+   ```jsx
+   /*
+   1. 이 함수는 useEffect와 동일하긴 한데, 모든 DOM 변경 후에 동기적으로 발생합니다.
+   2. DOM에서 레이아웃을 읽고 동기적으로 리렌더링하는 경우에 사용하세요.
+   3.  먼저 useEffect를 사용해 보고 문제가 있다면 그다음으로 useLayoutEffect를 사용해 보기를 권합니다.
+   
+    */
+   ```
+
+   6. useDebugValue
+
+   ```jsx
+   function useFriendStatus(friendID) {
+     const [isOnline, setIsOnline] = useState(null);
+
+     // ...
+
+     // Show a label in DevTools next to this Hook
+     // e.g. "FriendStatus: Online"
+     useDebugValue(isOnline ? "Online" : "Offline");
+
+     return isOnline;
+   }
+
+   // 1. useDebugValue는 React 개발자도구에서 사용자 Hook 레이블을 표시하는 데에 사용할 수 있다.
+   ```
+
+   ## Hooks 사용이유
+
+   1. **컴포넌트 사이에서 생태로직을 재사용하기 어렵다.**
+
+      - Hook을 사용하면 컴포넌트로부터 상태 관련 로직을 추상화할 수 있다.
+      - 독립적인 테스트와 재사용이 가능하다.
+      - Hook은 계층의 변화 없이 상태 관련 로직을 재사용할 수 있도록 도와준다.
+
+   2. **복잡한 코드를 간단하게 나타낼 수 있다.**
+
+      - Hook을 통해 서로 비슷한 것을 하는 작은 함수의 묶음으로 컴포넌트를 나누는 방법을 사용할 수 있다.
 
 ---
 

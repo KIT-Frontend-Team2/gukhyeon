@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import StyledButton from "./components/StyledButton";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 const PrimaryStyledButton = styled(StyledButton)`
   background: palevioletred;
@@ -26,9 +26,23 @@ const StyledMyButton = styled(MyButton)`
   font-size: 20px;
 `;
 
+const GlobalStyle = createGlobalStyle`
+button {
+  color: yellow
+}
+`;
+
+const StyledA = styled.a.attrs((props) => ({
+  target: "_blank",
+}))`
+  color: black;
+  background-color: white;
+`;
+
 function App() {
   return (
     <div className="App">
+      <GlobalStyle />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -40,6 +54,7 @@ function App() {
           </StyledButton>
           <StyledButton as={UpperCaseButton}>button</StyledButton>
           <StyledMyButton color="green">버튼</StyledMyButton>
+          <StyledA href="https://www.naver.com">링크</StyledA>
         </p>
       </header>
     </div>
