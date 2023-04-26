@@ -1,0 +1,181 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+@font-face {
+  font-family: "KalavikaBold";
+  src: url("./facebook-logo-font/KlavikaBoldBold.otf") format("opentype");
+  /* 파일 경로 그대로 넣으면 됨 */
+}
+
+body {
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.container {
+  background-color: #f0f2f5;
+  padding-top: 72px;
+  padding-bottom: 620px;
+}
+
+.content {
+  width: 980px;
+  margin: 20px auto; /* 브라우저가 적절한 여백 크기를 선택. 예를 들어 요소를 중앙 정렬하고 싶을 때 사용 */
+}
+
+.content > div {
+  float: left; /* 해당 요소를 어떻게 정렬할지를 정의 */
+}
+
+.first-content {
+  width: 580px;
+  padding-right: 32px;
+  box-sizing: border-box;
+}
+
+.facebook-logo {
+  margin: 112px 0px 16px;
+}
+
+.facebook-logo > img {
+  height: 106px;
+  margin: -28px;
+}
+
+.first-text {
+  font-size: 28px;
+  font-weight: normal;
+  color: #333;
+  font-family: "Noto Sans KR", sans-serif;
+  width: auto;
+  margin-right: 90px;
+  line-height: 33px;
+}
+
+.box {
+  background-color: #fff;
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+  padding: 10px 15px;
+  box-sizing: border-box;
+  margin-top: 40px;
+}
+
+.input-container > input[type="text"],
+.input-container > input[type="password"] {
+  width: 100%;
+  padding: 15px 15px;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid #dddfe2;
+  border-radius: 6px;
+  margin: 5px 0px;
+  font-size: 16px;
+}
+
+.input-container > input[type="text"]:focus,
+.input-container > input[type="password"]:focus {
+  border: 1px solid #1877f2;
+  box-shadow: 0px 0px 0px 2px #e7f3ff;
+}
+
+.loginBtn {
+  background-color: #1877f2;
+  color: #fff;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  margin: 10px 0px;
+}
+
+.find-password {
+  text-align: center;
+}
+
+.find-password > a {
+  font-weight: 400;
+  font-size: 14px;
+  color: #1877f2;
+  display: inline-block;
+  margin: 3px 0px 25px;
+  text-decoration: none;
+}
+
+.find-password > a:hover {
+  text-decoration: underline;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #d2d2d2;
+}
+
+.new {
+  text-align: center;
+}
+.newBtn {
+  display: inline-block;
+  background-color: #42b72a;
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px 15px 14px;
+  font-weight: 600;
+  font-size: 17px;
+  margin: 20px 0 7px;
+}
+
+.newPage {
+  color: #000;
+  text-align: center;
+  margin: 25px 0px;
+}
+
+.newPage > a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #000;
+}
+
+.newPage > a:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  width: 980px;
+  margin: 30px auto;
+}
+
+.footer > ul {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.footer > ul > li {
+  display: inline-block;
+  margin: 0px 5px;
+}
+
+.footer > ul > li > a {
+  text-decoration: none;
+  color: #777;
+  font-size: 13px;
+}
+
+.footer > ul > li > a:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  font-size: 11px;
+  padding: 10px 0px 10px 5px;
+  color: #777;
+}
