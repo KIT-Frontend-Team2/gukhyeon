@@ -3,6 +3,7 @@ import FindPassword from "../pages/find";
 import Login from "../pages/login";
 import Main from "../pages/main";
 import Account from "../pages/newAccount";
+import Error from "../pages/error";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/find",
     element: <FindPassword />,
+  },
+  {
+    path: "/*",
+    element: <Error />,
   },
 ]);
 
