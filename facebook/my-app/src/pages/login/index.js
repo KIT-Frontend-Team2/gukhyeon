@@ -28,7 +28,7 @@ function Login() {
           <Link to="/find">비밀번호를 잊어버리셨나요?</Link>
           <br />
           <Link to="/account">
-            <button type="submit">새 계정 만들기</button>
+            <button type="submit">새 계정 만들기!</button>
           </Link>
         </form>
       </header>
