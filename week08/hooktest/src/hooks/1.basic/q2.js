@@ -1,67 +1,3 @@
-import { useRef, useState } from "react";
-
-function Q2() {
-  const inputRef = useRef();
-  const listRef = useRef([]);
-  const pRefColor = useRef();
-  const [forceRender, setForceRender] = useState(false);
-
-  const onAddList = () => {
-    const value = inputRef.current.value;
-    listRef.current.push(value);
-    setForceRender((prev) => !prev);
-  };
-
-  const onSubmitList = () => {
-    const list = listRef.current;
-    if (list.length === 0) {
-      return;
-    }
-    const items = list.map((item, index) => <li key={index}>{item}</li>);
-    return items;
-  };
-
-  const onChangeColor = () => {
-    const currentColor = pRefColor.current.style.color;
-    if (currentColor === "red") {
-      pRefColor.current.style.color = "black";
-    } else {
-      pRefColor.current.style.color = "red";
-    }
-  };
-
-  return (
-    <>
-      <h1>문제2</h1>
-      <div>
-        <h2>문제 2-1</h2>
-        <p>
-          <input ref={inputRef} />
-        </p>
-        <p>
-          <button onClick={onAddList}>추가</button>
-        </p>
-        <p>
-          <button>제출</button>
-        </p>
-
-        {listRef.current.length === 0 ? (
-          <p>제출된 목록이 없습니다</p>
-        ) : (
-          <ul>{onSubmitList()}</ul>
-        )}
-      </div>
-      <div>
-        <h2>문제 2-2</h2>
-        <p ref={pRefColor}> 이 문구는 아래 버튼을 누르면 색상이 바뀝니다</p>
-        <button onClick={onChangeColor}>변경</button>
-      </div>
-    </>
-  );
-}
-
-export default Q2;
-
 /* 
     문제2
 
@@ -93,3 +29,62 @@ export default Q2;
 
         따라서 useRef는 사용하여 해당 문구의 색상을 변경해보세요 :)
   */
+
+import React, { useRef, useState } from "react";
+
+function Q2() {
+  const arrRef = useRef([]);
+  const inputRef = useRef(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [isColorChanged, setColorChanged] = useState(false);
+  const pRef = useRef();
+
+  const handleAdd = () => {
+    const updatedArr = [...arrRef.current, inputRef.current.value];
+    arrRef.current = updatedArr;
+    inputRef.current.value = "";
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+  };
+
+  let content = null;
+
+  if (submitted) {
+    if (arrRef.current.length === 0) {
+      content = <p>제출된 목록이 없습니다.</p>;
+    } else {
+      content = (
+        <ul>
+          {arrRef.current.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+      );
+    }
+  }
+
+  const onChangeColor = () => {
+    const color = isColorChanged ? "black" : "red";
+    pRef.current.style.color = color;
+    setColorChanged(!isColorChanged);
+  };
+
+  return (
+    <>
+      <div>
+        <input type="text" ref={inputRef} />
+        <button onClick={handleAdd}>추가</button>
+        <button onClick={handleSubmit}>제출</button>
+        {content}
+      </div>
+      <div>
+        <h2>문제 2-2</h2>
+        <p ref={pRef}>이 문구는 아래 버튼을 누르면 색상이 바뀝니다</p>
+        <button onClick={onChangeColor}>변경</button>
+      </div>
+    </>
+  );
+}
+export default Q2;
