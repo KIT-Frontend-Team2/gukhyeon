@@ -24,7 +24,7 @@ function State1() {
 
     const newSong = {
       title: newSongTitle,
-      signer: newSongSinger,
+      singer: newSongSinger,
     };
     setPlayList([...playList, newSong]);
     setNewSongTitle("");
@@ -43,7 +43,7 @@ function State1() {
         {playList.map((song) => (
           <li key={song.title}>
             <h3>{song.title}</h3>
-            <p>{song.signer}</p>
+            <p>{song.singer}</p>
             <button onClick={() => handleDeleteList(song.title)}>삭제</button>
           </li>
         ))}

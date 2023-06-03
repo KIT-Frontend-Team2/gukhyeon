@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-function Comment({ user, content }) {
+function Comment({ user, content, setPost, post }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
 
@@ -12,6 +12,20 @@ function Comment({ user, content }) {
   const onChangeContent = (e) => {
     setEditedContent(e.target.value);
   };
+  const handleUpdate = (content) => {
+    setPost((prev) => ({
+      ...prev,
+      Comment: prev.Comments.map((comment) => {
+        if (comment.content === content) {
+          return {
+            ...comment,
+            content: editedContent,
+          };
+        }
+        return comment;
+      }),
+    }));
+  };
 
   const onSubmitEdit = (e) => {
     e.preventDefault();
@@ -19,12 +33,16 @@ function Comment({ user, content }) {
     toggleEditMode();
   };
 
+  // 업데이트 할 항목 찾아 접근 후 값을 수정
+
   return (
     <S.CommentItem>
       {isEditMode ? (
         <form onSubmit={onSubmitEdit}>
           <input type="text" value={editedContent} onChange={onChangeContent} />
-          <button type="submit">저장</button>
+          <button type="submit" onClick={handleUpdate}>
+            저장
+          </button>
           <button type="button" onClick={toggleEditMode}>
             취소
           </button>

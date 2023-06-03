@@ -138,7 +138,13 @@ function State2() {
       </div>
       <S.CommentList>
         {post.Comments.map((comment, index) => (
-          <Comment key={index} user={comment.User} content={comment.content} />
+          <Comment
+            key={index}
+            user={comment.User}
+            content={comment.content}
+            post={post}
+            setPost={setPost}
+          />
         ))}
       </S.CommentList>
     </S.Wrapper>
