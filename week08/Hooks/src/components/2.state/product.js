@@ -20,7 +20,7 @@ const Item = styled.li`
   width: 300px;
   margin: 16px auto;
 `;
-
+ 
 const S = {
   Item,
 };

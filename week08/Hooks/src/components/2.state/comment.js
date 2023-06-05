@@ -26,7 +26,7 @@ function Comment({ nickname, content, onDelete, handleUpdateComment }) {
           <textarea value={editContent} onChange={onChange}></textarea>
         ) : (
           <p>
-            댓글 내용: <span>{content}</span>{" "}
+            댓글 내용: <span>{editContent}</span>{" "}
           </p>
         )}
       </span>

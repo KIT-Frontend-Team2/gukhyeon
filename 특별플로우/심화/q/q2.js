@@ -1,4 +1,4 @@
-import { MockPosts } from './faker.js';
+import { MockPosts } from "./faker.js";
 console.log(MockPosts(10));
 
 let totalItemCount = MockPosts(200).length;
