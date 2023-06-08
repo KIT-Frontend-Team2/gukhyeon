@@ -1,0 +1,134 @@
+1. .env
+가장 우선순위가 낮은 환경변수 설정 파일
+
+2. .env.development
+개발 환경에서만 작동되는 환경변수 설정 파일
+
+3. .env.production
+배포 환경에서만 작동되는 환경변수 설정 파일
+
+4. .env.test
+테스트 환경에서만 작동되는 환경변수 설정 파일
+
+각각 파일에는 local 파일이 존재하며 (ex .env.local, .env.development.local)
+local 파일은 기존에 있던 파일보다 우선 순위가 높다
+
+.env < .env.local < .env.development/production/test < .env development/production/test.local 
+
+* 주의사항
+  .env는 git과 같은 원격 저장소나 버전관리 저장소에 올라가도 되나?
+    안된다. 환경 변수는 배포 환경에서 직접 설정해 줄 수 있다.
+
+5. .env.sample 
+배포 시 환경변수의 key 값이 어떤 것을 의미하는지 정의한 문서
+ex) REACT_APP_BACK_URL : 계좌 관련 API 백엔드 URL 
+
+// Math.floor 버림 5.33 => 5 -1.23 => -2, Math.thunc 제거 5.33 => 5 -1.23 => -1
+// dayjs, momentjs, luxon 라이브러리와 new Date() 의 차이 new Date()는 사용자의 로컬 환경을 받아옴, 다른 라이브러리는 서버의 시간을 받아옴 
+// UTC 타입: unix의 시간으로 데이터를 받아오는 것 (1970년 1월 1일 0시 0분 0초..)
+마이그레이션 - 스크립트, dump. redis 
+프로젝트 진행시 사용한 라이브러리의 사용법이나 다큐먼트 정도는 알고 쓰자 
+props drilling, 전역상태관리 면접때 중요
+
+커스텀 훅 => 재사용되는 훅 함수가 들어가는 거
+
+array-helper.js - 배열을 파싱하는 것 제일 많이 사용
+
+jwt - json-web-token : json 형태의 객체를 암호화해서 로컬환경에서도 암호화된 형태로 나오는 것 
+
+
+----------------------------------------------------------------------------------------
+
+1. 인증 토큰, 재발급 토큰
+  인증토큰, 유저의 정보가 암호화 된 토큰이며 해당 토큰이 있어야 해당 사용자는 인증된 사용자 
+
+  보통 해당 인증 토큰이 없다면 response status code 401 (unauthorized) 
+  토큰이 있지만 허가되지 않은 사용자는 response status code 403 (forbidden) 
+
+  따라서 해당 토큰이 만료되면 401, 403을 return 
+  프론트엔드 개발자가 401과 403을 비동기 통신의 응답 결과로 반환 받으면 어떻게 해야할까?
+  
+  1) refresh token 있다면?
+    axios interceptor 해당 에러가 발생하면 refresh token으로 access token을 재발급 받고 
+    실패한 요청을 다시 재요청 
+
+  2) refresh token 없다면?
+    프론트엔드에서는 로그아웃 로직을 실행 
+
+
+  // 결과값이 많은 경우 switch문을 사용하는 법도 좋다, 결과값이 몇 없는 경우 if문 early return 사용
+
+
+
+2. 토큰 관리 방법
+
+  1) 웹 스토리지
+        브라우저를 통해 데이터를 저장 
+        DB에 저장되는 데이터와 달리 삭제되어도 상관없는 소량의 데이터를 저장할 때 사용 
+        사용자에게 데이터 저장을 부담 -> 사용자의 하드웨어에 의존하는 소프트웨어 탄생 
+
+      로컬 스토리지 
+        영구적인 스토리지, 다른 탭에서도 데이터가 공유되는 특징이 있다.
+        웹 페이지의 세션(생명주기)이 끝나도 데이터가 삭제되지 않음 
+
+        ex) - 인증 토큰을 저장 
+            - 비회원 로직 구성, 비회원은 인덱싱 키 값이 없음, 그러나 인덱싱 키가 있다면 DB에 저장 가능 
+
+      세션 스토리지 
+        웹 페이지의 세션이 끝나면 데이터가 함께 삭제 
+        다른 탭에서 데이터가 격리되어 저장 
+
+      사용법 
+        localstorage 혹은 sessionstorage
+
+        .setItem(key, value) => 해당 key, value 쌍으로 저장 
+        .getItem(key) => 해당 key 조회
+        .removeItem(key) => 해당 key 삭제
+        .clear() => 모든 데이터 삭제 
+
+  2) 쿠키
+      브라우저에 저장된 key-value 로 이루어진 작은 데이터 파일 
+      따로 설정하지 않아도 서버와의 데이터 교환이 가능하며 
+      https나 secure 옵션을 통해서 https 환경에서만 교환이 가능하거나 외부에서 접근이 불가능 하도록 설정이 가능 
+
+      브라우저가 닫히면 삭제, 유효기간을 명시하면 닫혀도 삭제되지 않는다 .
+
+      ex) 
+        refresh-token 
+        session-id 
+        자동 로그인 
+        팝업창(모달창) 3일 동안 보지 않기 
+
+  3) state --- 비추
+      웹 스토리지에 저장된 로그인 정보는 영구적으로 혹은 반영구적으로 유지할 수 있지만 
+      state가 맞을까?
+
+      로그인이 완료 되었을 때 실행해야 하는 로직이 있다면 그 로직이 있고 UI를 변경시켜야 한다면 ?
+      
+      1. 새로고침, 페이지 이동 -> 페이지의 깜빡임이 있음 
+      2. 전역상태관리로 가지고 있는 것 
+
+
+3. 백엔드에서 프론트 엔드에 토큰을 전달하는 방법 
+  1. res.body
+  2. res.header 
+  3. cookies 
+
+4. 프론트엔드에서 백엔드에 토큰을 전달하는 방법 
+  1. req.body 
+  2. cookies
+      - axios 인스턴스 생성시 withCrdentials = true 
+      - 서버 간의 통신에서 쿠키를 서로 교환 가능하도록 하는 옵션 
+
+  3. res.header (가장 많이 사용하는 법)
+      - axios interceptor 
+      - axios 인스턴스 생성의 default 
+
+------------------------------------------------------------------------------------------------
+
+과제 
+1. todo, accessToke, api call의 대한 관심사(soc - 의존성 주입 방법) 분리 (props drilling, 전역상태관리 자유)
+2. delete, updata 구현 -> axios.delete('/todo/3')
+                          axios.put('/todo/3', {content, state})
+
+  
